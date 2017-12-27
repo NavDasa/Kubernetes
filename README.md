@@ -21,13 +21,17 @@ Kubernetes setup and Configurations:
       1. yum install -y ntp
       2. systemctl enable ntpd && systemctl start ntpd && systemctl status ntpd
       3. vim /etc/hosts
-              # Paste the IP address & name of the Nodes in order to communicate.
+             
+             # Paste the IP address & name of the Nodes in order to communicate.
+              
               173.31.24.15 centos-master1
               173.31.25.26 centos-Node1
               173.31.26.58 centos-Node2
               173.31.28.65 centos-Node3
+              
       4. We can also verify it is configured correctly or not by ping centos-Node1 in Master, and ping centos-master1 in the node.
       5. vim /etc/yum.repos.d/virt7-docker-common-release.repo 
+               
                # Paste the below content in both Minions(Nodes) and Master for the etcd to communicate
                
                [virt7-docker-common-release]
@@ -37,11 +41,12 @@ Kubernetes setup and Configurations:
 
       6. yum update 
       7. We have to enable repo and install the etcd for kuberntes & also we have to install docker also by using the command: 
-          yum install --enablerepo=virt7-docker-common-release etcd kubernetes docker
+          
+               yum install --enablerepo=virt7-docker-common-release etcd kubernetes docker
           
      Note: Everything relates to packages and depencies has should be done in both Master and Nodes
       
-             
+2. Install and configure Master controller.             
              
 
 
