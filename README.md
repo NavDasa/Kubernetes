@@ -14,6 +14,9 @@ Introduction to YAML:
 2. Based on Idententation, also compiling & running complex applications. 
 
 
+Kubernetes setup and Configurations:
+
+1. Packages and Dependencies:
 
 
 
