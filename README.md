@@ -16,6 +16,8 @@ Introduction to YAML:
 
 Kubernetes setup and Configurations:
 
+Note: while we are configuring with centos-master or centos-node if it is not properly configuring in the place of centos-master usse the IP Address of the centos-master & In the place of centos-nodes use the IP Address what we have given as per the requirement.
+
 1. Packages and Dependencies:
       1. First thing we have to download ntp service in all of our Master and Minions(Nodes).
       
