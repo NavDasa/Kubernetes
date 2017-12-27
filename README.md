@@ -26,8 +26,6 @@ Kubernetes setup and Configurations:
               173.31.25.26 centos-Node1
               173.31.26.58 centos-Node2
               173.31.28.65 centos-Node3
-              
-             # Note that we are Just pasteing the IP address of each Node as well as master in order to communication for master and nodes.
              
              
 
