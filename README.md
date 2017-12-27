@@ -124,6 +124,8 @@ Kubernetes setup and Configurations:
                   
                   systemctl status etcd kube-apiserver kube-controller-manager kube-scheduler | grep "(running)" |wc -l
                   
+    Note: The above configuration as to be done only in the Master only.
+                  
  
                   
                   
