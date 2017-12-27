@@ -26,6 +26,8 @@ Kubernetes setup and Configurations:
               173.31.25.26 centos-Node1
               173.31.26.58 centos-Node2
               173.31.28.65 centos-Node3
+      4. We can also verify it is configured correctly or not by ping centos-Node1 in Master, and ping centos-master in the node.
+      
              
              
 
