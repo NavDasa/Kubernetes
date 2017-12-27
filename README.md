@@ -17,6 +17,19 @@ Introduction to YAML:
 Kubernetes setup and Configurations:
 
 1. Packages and Dependencies:
+--> First thing we have to download ntp service in all of our Master and Minions(Nodes).
+    a) yum install -y ntp
+    b) systemctl enable ntpd && systemctl start ntpd && systemctl status ntpd
+    c) vim /etc/hosts
+              # Paste the IP address & name of the Nodes in order to communicate.
+              173.31.24.15 centos-master1
+              173.31.25.26 centos-Node1
+              173.31.26.58 centos-Node2
+              173.31.28.65 centos-Node3
+              
+             # Note: we are Just pasteing the IP address of each Node as well as master in order to communication for master and nodes.
+             
+             
 
 
 
