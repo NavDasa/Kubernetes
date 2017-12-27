@@ -115,6 +115,21 @@ Kubernetes setup and Configurations:
                   # default admission control polices
                   # KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle.NamespaceExists.LimitRanger.SecurityContext.ServiceAccount.Restore.ResourceQuota"
                   
+    
+      8. Make sure after changing and saving all this we have to enable the four services as fallows:
+      
+                  systemctl enable etcd kube-apiserver kube-controller-manager kube-scheduler
+                  
+                  systemctl start etcd kube-apiserver kube-controller-manager kube-scheduler
+                  
+                  systemctl status etcd kube-apiserver kube-controller-manager kube-scheduler | grep "(running)" |wc -l
+                  
+ 
+                  
+                  
+                  
+                  
+                  
               
       
              
