@@ -17,9 +17,13 @@ Introduction to YAML:
 Kubernetes setup and Configurations:
 
 1. Packages and Dependencies:
-     First thing we have to download ntp service in all of our Master and Minions(Nodes).
-      1. yum install -y ntp
-      2. systemctl enable ntpd && systemctl start ntpd && systemctl status ntpd
+      1. First thing we have to download ntp service in all of our Master and Minions(Nodes).
+      
+               yum install -y ntp
+      2. We have to enable & start the ntpd services. 
+               
+               systemctl enable ntpd && systemctl start ntpd && systemctl status ntpd
+      
       3. vim /etc/hosts
              
              # Paste the IP address & name of the Nodes in order to communicate.
@@ -29,7 +33,11 @@ Kubernetes setup and Configurations:
               173.31.26.58 centos-Node2
               173.31.28.65 centos-Node3
               
-      4. We can also verify it is configured correctly or not by ping centos-Node1 in Master, and ping centos-master1 in the node.
+      4. We can also verify it is configured correctly or not by using the below commands: 
+               
+               ping centos-Node1 in Master 
+               ping centos-master1 in the node
+               
       5. vim /etc/yum.repos.d/virt7-docker-common-release.repo 
                
                # Paste the below content in both Minions(Nodes) and Master for the etcd to communicate
@@ -39,14 +47,18 @@ Kubernetes setup and Configurations:
                baseurl=http://cbs.centos.org/repos/virt7-docker-common-release/x86_64/os/
                gpgcheck=0
 
-      6. yum update 
+      6. Update the Environment in both Master and Nodes. 
+               
+                    yum update 
+                    
       7. We have to enable repo and install the etcd for kuberntes & also we have to install docker also by using the command: 
           
                yum install --enablerepo=virt7-docker-common-release etcd kubernetes docker
           
      Note: Everything relates to packages and depencies has should be done in both Master and Nodes
       
-2. Install and configure Master controller.             
+2. Install and configure Master controller:
+     1. 
              
 
 
