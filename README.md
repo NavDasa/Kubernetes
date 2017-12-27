@@ -122,9 +122,103 @@ Kubernetes setup and Configurations:
                   
                   systemctl start etcd kube-apiserver kube-controller-manager kube-scheduler
                   
-                  systemctl status etcd kube-apiserver kube-controller-manager kube-scheduler | grep "(running)" |wc -l
+                  systemctl status etcd kube-apiserver kube-controller-manager kube-scheduler | grep "(running)" | wc -l
                   
     Note: The above configuration as to be done only in the Master only.
+    
+    
+ 3. Install and Configure Nodes(Minions) : 
+ 
+ We has to do This configuration only in the Node1, Node2, Node3 ..n all the Nodes only depending on how many nodes you are taking.
+   1. Go the configuration file by using the below commands:
+            
+            cd /etc/kubernetes
+            ll
+            
+   2. we can see the configuration file here change and add the configuration file in the controller manager, schedular & proxy that kube master has to run in the centos-master node in 8080 and also add the following etcd_servers along kubemasters is shown below:   
+     
+            vim config
+            
+                  # How the control manager, schedular & proxy and api server.
+                  
+                 KUBE_MASTER="--master=http://centos-master:8080"
+                 
+                 KUBE_ETCD_SERVERS="--etcd-servers=http://centos-master:2379"
+                 
+                 
+   3. Go back to the kubernetes directory and edit the kubelet:
+                  
+                  cd /etc/kubernetes/
+                  ll
+      
+   4. Edit the kubelet: 
+      
+                  vim kubelet
+                       
+   5. See the kubelet configuration file has to be as fallows in some places & remaining all are same:
+   
+                  # The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+                  KUBELET_ADDRESS="--address=0.0.0.0"
+                  
+                  # The port for the info server to serve on
+                  KUBELET_PORT="--port=10250"
+                  
+                  # You may leave this blank to use the actual hostname
+                  KUBELET_HOSTNAME="--hostname-override=centos-minion1"
+                  
+                  # location of the api-server
+                  KUBELET_API_SERVER="--api-server=http://centos-master:8080"
+                  
+                  # pod infrastructure container
+                  # KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=re.....................everything are same in the configfile file
+                  
+   6. Make sure after changing and saving all this we have to enable the three services as fallows:
+      
+                  systemctl enable etcd kube-proxy kubelet docker
+                  
+                  systemctl start etcd kube-proxy kubelet docker
+                  
+                  systemctl status etcd kube-proxy kubelet docker | grep "(running)" | wc -l
+                  
+                  
+   7. we have to make sure that docker is running currently are not by using the below commands and also check by pulling the hello-world image.
+   
+                  docker images
+                  docker version
+                  docker pull hello-world
+                  docker images
+                  docker run hello-world
+                  docker ps
+                  docker ps -a
+                  
+                  
+ 4. Kubectl: Exploring our Environment ( Main Untility):
+ 
+      1. Basically kubectl controlles & manages the cluster manager we can also see the kubectl man page by using below command:
+                  
+                  man kubectl
+                  
+      2. we can also check that what nodes are registerd & also can see the man page of kubectl-get by using the below command:
+      
+                  kubectl get nodes
+                  
+                  man kubectl-get
+                  
+      3. If we want to describe the nodes & also describes the nodes in the JSON format & also says that they are ready=True:
+                  
+                  kubectl describe nodes
+                  
+                  kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address)'
+                  
+                  kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'| tr ';' "\n"  | grep "Ready=True"
+                  
+     4. Finally we know that an Nodes consists of pods or services which they don't have Now, So If we use below command It shows Nothing:   
+     
+                  kubectl get pods
+                  
+                  
+   
+                 
                   
  
                   
