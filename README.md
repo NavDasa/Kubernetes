@@ -49,7 +49,7 @@ Kubernetes setup and Configurations:
 
       6. Update the Environment in both Master and Nodes. 
                
-                    yum update 
+               yum update 
                     
       7. We have to enable repo and install the etcd for kuberntes & also we have to install docker also by using the command: 
           
@@ -57,8 +57,66 @@ Kubernetes setup and Configurations:
           
      Note: Everything relates to packages and depencies has should be done in both Master and Nodes
       
-2. Install and configure Master controller:
-     1. 
+2. Install and configure Master controller: we has to be in the Root user.
+     1. Go the configuration file by using the below commands:
+            
+            cd /etc/kubernetes
+            ll
+           
+     2. we can see the configuration file here change and add the configuration file in the controller manager, schedular & proxy that kube master has to run in the centos-master node in 8080 and also add the following etcd_servers along kubemasters is shown below:   
+            
+            vim config
+            
+                  # How the control manager, schedular & proxy and api server.
+                  
+                 KUBE_MASTER="--master=http://centos-master:8080"
+                 
+                 KUBE_ETCD_SERVERS="--etcd-servers=http://centos-master:2379"
+                 
+            
+      3. Now go to the etcd configuration file:
+             
+             cd /etc/etcd
+             ll
+      
+      4. Change and edit the etcd configuration file:
+             
+             vim etcd.conf
+             
+                  # In the Member and cluster sections edit the etcd clients url and etcd advertise client urls from local host to 0.0.0.0
+                  
+                  ETCD_LISTEN_CLIENTS_URLS="http://0.0.0.0:2379"
+                  
+                  ETCD_ADVERTISE_CLIENTS_URLS="http://0.0.0.0:2379"
+      
+      5. Go back to the kubernetes directory and edit the api-server:
+                  
+                  cd /etc/kubernetes/
+                  ll
+      
+      6. Edit the api-server: 
+      
+                  vim apiserver
+                  
+      7. Edit and change as fallows i.e it has to be like below for the fallowing and the remaining all are same:
+      
+                  # The address of the local server listen to
+                  KUBE_API_ADDRESS="--address=0.0.0.0"
+                  
+                  # The port on the local server to listen on.
+                  KUBE_API_PORT="--port=8080"
+                  
+                  # Port minions listen to
+                  KUBELET_PORT="--kubelet-port=10250"
+                  
+                  # Comma separated list of nodes in the etcd cluster
+                  KUBE_ETCD_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
+                  
+                  # default admission control polices
+                  # KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle.NamespaceExists.LimitRanger.SecurityContext.ServiceAccount.Restore.ResourceQuota"
+                  
+              
+      
              
 
 
