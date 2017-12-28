@@ -455,7 +455,7 @@ Multi-Pod( Container ) Replication Controller:
                           
    Fallow the below steps as fallows first create, delate the Pods, and see the New Pods is created or not by using the below commands:
    
-                  kubectl create -f nginx-replication controller
+                  kubectl create -f nginx-replication controller.yaml
                   
                   kubectl get pods
                   
@@ -478,6 +478,61 @@ Multi-Pod( Container ) Replication Controller:
                   
 Create and Deploy services:
 
+   Note: Use all centos-master & centos-node1, centos-node2 & centos-node3. You can also start the both centos-node2 & centos-node3 by using the command:
+
+                 systemctl start kubelet kube-proxy ( in both centos-node2 & centos-node3)
+                 
+   We has to first create the Replication-contoller as i.e nginx-replicaition-controller.yaml file in other to deploy Services. For creating use the command below:
+   
+                  kubectl create -f nginx-replication controller.yaml
+   
+   First, what this exactly says is that,we need to create a service defination, a service defination starts to tie together, we got this three pods across this three minion(Nodes) and they are not Exposed except to other containers in pods and Pods in containers on the same host that they exit on. However, when we define a service we are actually creating a cluster that refers to resource that can exist on any of our minions(Nodes). What do I exactly mean by that, we are abstracting whats running behind the seens in our cluster and we are providing a mechanism for kubernetes simply to asign a single IP Address to those multiple pods to through refered to by Name or by Label or selector so it can connect to them and do something. And can have a Unique IP Address that doesn't matter where we are, if we refered to the IP Address, in the subsequent assigned port from any of the host we can use the cluster IP & Port combination, to work with the entire cluster of pods that meat the selector for the Label or the Name of the application or However we are refering to it.
+   
+   First Let's build our YAML File for service, by naming the file nginx-service.yaml, and paste the below content:
+   
+                  apiVersion: v1
+                  kind: Service
+                  metadata:
+                    name: nginx-service
+                  spec:
+                    ports:
+                    - port: 8080
+                      targetPort: 80
+                      protocol: TCP
+                    selector:
+                      app: nginx
+                      
+   Now we can create a service & see the services, here if we observe a New-service will be created with an IP Address for the nginx port 8000/TCP. Use the below commands:
+   
+                  kubectl create -f nginx-service.yaml
+                  
+                  kubectl get services
+                  
+   For the below command is to describe the service,endpoints, clusterIP address:
+   
+                  kubectl describe service nginx-service
+                  
+   Note: What we are doing Now is that we are doing a round-robin Interface between this Endd-points, on Port 8000 for this Particular IP address. So how do I connect to it by using the below command:
+   
+                  kubectl run busybox --generator=run-pod/v1 --image=busybox --restart=Never --tty -i
+                  
+   Here we will login to the container, So use the below command in order to get nginx-html page internally.
+   
+                  wget -qO- http://10.254.197.123:8000 ( Now we can see the html page )
+                  
+   If we want to delete the busybox again, use the below command:
+   
+                  kubectl delete pod busybox
+                  
+   If we want to delete the service use the below command:
+   
+                  kubectl delete service nginx-service ( It won't deletes the Pods it deletes only services )
+   
+   
+   
+   
+   
+   
 
   
                           
