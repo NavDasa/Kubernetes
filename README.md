@@ -287,6 +287,8 @@ Creating and Deploying Pods:
   
       Note: Now we get the nginx service externally by using the above wget command.
       
+  
+      
       
                   
                   
