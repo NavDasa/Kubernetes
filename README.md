@@ -293,7 +293,7 @@ Tags, Labels and Selectors:
 
    Why this tags,labels comes into picture is that we have "n" Number of Pods in an organization, In order communicate with one pod to another pod there should an label. So, this label has to be mention in the Pod. So inorder to do all this first of all we have to create an YAML file that contains Pods which has label in that Pod. Please see below the YAML file. And name of the YAML file is nginx-pod-label.yaml file:
    
-                apiVersion: V1
+                  apiVersion: V1
                   kind: Pod
                   metadata:
                     name: nginx
