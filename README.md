@@ -222,6 +222,10 @@ Note: while we are configuring with centos-master or centos-node if it is not pr
 
 Creating Pods:
 
+Note: Use only one centos-master & one centos-node1 and stop centos-node2 & centos-node3.
+
+                  systemctl stop kubelet kube-proxy ( in both centos-node2 & centos-node3) 
+
    1. Below what we do exactly is that we create a YAML file and name it as nginx.yaml in a Directory called Build.In order to create a Pod contains an nginx container. So after creating Pod this can be deployed in one Node, So that we can see the same nginx container. 
    
       In this senario we use one centos-Master and one centos-Node. Below is the commands to start with:
@@ -291,6 +295,10 @@ Creating Pods:
    
 Tags, Labels and Selectors:
 
+Note: Use only one centos-master & one centos-node1 and stop centos-node2 & centos-node3.
+
+                  systemctl stop kubelet kube-proxy ( in both centos-node2 & centos-node3) 
+
    Why this tags,labels comes into picture is that we have "n" Number of Pods in an organization, In order communicate with one pod to another pod there should an label. So, this label has to be mention in the Pod. So inorder to do all this first of all we have to create an YAML file that contains Pods which has label in that Pod. Please see below the YAML file. And name of the YAML file is nginx-pod-label.yaml file:
    
                   apiVersion: V1
@@ -319,6 +327,10 @@ Tags, Labels and Selectors:
    
    
 Deployment State: 
+
+Note: Use only one centos-master & one centos-node1 and stop centos-node2 & centos-node3.
+
+                  systemctl stop kubelet kube-proxy ( in both centos-node2 & centos-node3) 
 
    Why this deployment kind came into picture is that, As an Example we can do with a kind deployment and this consists of one Pod (Mentioned in an Replica) and also this Pod (Replica) contain an label associated with it and contains one nginx-container.As per why this deployment kind came into picture is that mainly for the updates. what it exactly mean is that for example we have nginx-deployment-prod.yaml & nginx-deployment-dev.yaml, if we want to update the nginx-container version from 1.7.9 to 1.8 of the nginx-deployment-prod.yaml first we have to test in the dev.
    
@@ -408,6 +420,69 @@ Deployment State:
                   kubectl describe deployments -l app=nginx-deployment-dev
                   
                   
+Multi-Pod( Container ) Replication Controller:
+
+   Note: Use all centos-master & centos-node1, centos-node2 & centos-node3. You can also start the both centos-node2 & centos-node3 by using the command:
+
+                 systemctl start kubelet kube-proxy ( in both centos-node2 & centos-node3) 
+                 
+   why,this replication controller came, is that because we can deploy Multiple Pods, in Multiple Nodes at the same time as far we written the YAML File. what it does is that even if we delate the Pod as far we mentioned in the replica, it automatically create a new Pod. And also this each pod conatines container in it, after we create Replication Controller, we can see in the Nodes for the command "docker ps" we can see an container in the Pod accordingly in each Node. How the YAML file looks like is as fallows:
+   
+                  mkdir Builds
+                  cd Builds
+                  
+   create an YAML file by naming it as nginx-replication-controller.yaml, and paste the content below:
+   
+                  apiVersion: v1
+                  kind: ReplicationController
+                  metadata:
+                    name: nginx-www
+                  spec:
+                    replicas: 3
+                    selector:
+                      app: nginx
+                    template:
+                      metadata:
+                        name: nginx
+                        labels:
+                          app: nginx
+                      spec:
+                        containers: 
+                        - name: nginx
+                          image: nginx
+                          ports:
+                          - containerPort: 80
+                          
+   Fallow the below steps as fallows first create, delate the Pods, and see the New Pods is created or not by using the below commands:
+   
+                  kubectl create -f nginx-replication controller
+                  
+                  kubectl get pods
+                  
+   Check that we have containers(Pods) in the centos-Node1 & centos-Node2 & centos-Node3 by using the command:
+   
+                  docker ps
+                  
+   Now just to make sure that our replication-controller is configured currently are not by delating a Pod. So if we delate a Pod it should automatically spin up a New Pod.
+   
+                  kubectl delete Pod <Pod Name>
+                  kubectl get pods
+                  
+   Here if we check we have another Pod created. In order to describe the Pod use the below command
+                  
+                  kubectl describe pod <Pod Name>
+                  
+   In order to delate this whole Replication-controller environment in centos-master Just use the below command:
+   
+                  kubectl delete ReplicationController 
+                  
+Create and Deploy services:
+
+
+  
+                          
+   
+   
    
    
                   
