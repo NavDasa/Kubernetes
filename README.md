@@ -318,6 +318,100 @@ Tags, Labels and Selectors:
    Note: This will be used if we have "n" number of pods contains "n" number of labels, by using the above commands we can describe or get labels of the particular Pod.
    
    
+Deployment State: 
+
+   Why this deployment kind came into picture is that, As an Example we can do with a kind deployment and this consists of one Pod (Mentioned in an Replica) and also this Pod (Replica) contain an label associated with it and contains one nginx-container.As per why this deployment kind came into picture is that mainly for the updates. what it exactly mean is that for example we have nginx-deployment-prod.yaml & nginx-deployment-dev.yaml, if we want to update the nginx-container version from 1.7.9 to 1.8 of the nginx-deployment-prod.yaml first we have to test in the dev.
+   
+   So in order to do that first copy the nginx-deployment-dev.yaml to nginx-deployment-dev-update.yaml and change the version of nginx(container) to 1.8 in the nginx-deployment-dev-update.yaml file and apply those changes. So it automatically update the nginx(container) version to 1.8 in the nginx-deployment-dev.yaml. 
+   
+   Below are the steps, Procedure from creating YAML file. In the Builds Directory we have to create an two YAML files naming it as nginx-deployment-prod.yaml & nginx-deployment-dev.yaml contains the below data:
+   
+   For nginx-deployment-prod.yaml: 
+   
+                  apiVersion: extensions/v1beta1
+                  kind: Deployment
+                  metadata:
+                    name: nginx-deployment-prod
+                  spec:
+                    replicas: 1
+                    template: 
+                      metadata:
+                        labels:
+                          app: nginx-deployment-prod
+                      spec:
+                        containers:
+                        - name: nginx-deployment-prod
+                          image: nginx:1.7.9
+                          ports:
+                          - containerPort: 80
+                          
+                        
+   For nginx-deployment-dev.yaml: 
+   
+                  apiVersion: extensions/v1beta1
+                  kind: Deployment
+                  metadata:
+                    name: nginx-deployment-dev
+                  spec:
+                    replicas: 1
+                    template: 
+                      metadata:
+                        labels:
+                          app: nginx-deployment-dev
+                      spec:
+                        containers:
+                        - name: nginx-deployment-dev
+                          image: nginx:1.7.9
+                          ports:
+                          - containerPort: 80
+                          
+                          
+   Create the deployments for Prod & dev by using the below commands:
+   
+                  kubectl create -f nginx-deployment-prod.yaml
+                  kubectl create -f nginx-deployment-dev.yaml
+                  
+   we can also check those deployments & pods that we have by using the below commands:
+   
+                  kubectl get pods ( we can see pods )
+                  kubectl get deployments ( we can see the both deployments )
+                  
+   As per the senario of the kind deployment we have to do update Now, So in order to do that first copy the file from nginx-deployment-dev.yaml to nginx-deployment-dev-update.yaml by using the below command:
+   
+                  cp nginx-deployment-dev.yaml nginx-deployment-dev-update.yaml
+                  
+   Change to nginx (container) version in the nginx-deployment-dev-update.yaml file from 1.7.9 to 1.8 as fallows:
+   
+                  apiVersion: extensions/v1beta1
+                  kind: Deployment
+                  metadata:
+                    name: nginx-deployment-dev
+                  spec:
+                    replicas: 1
+                    template: 
+                      metadata:
+                        labels:
+                          app: nginx-deployment-dev
+                      spec:
+                        containers:
+                        - name: nginx-deployment-dev
+                          image: nginx:1.8
+                          ports:
+                          - containerPort: 80
+   
+   Run the below commands in order to make this update in nginx-deployment-dev.yaml (But are not creating this nginx-deployment-dev-update.yaml file we are Just updating)
+   
+                  kubectl apply -f nginx-deployment-dev-update.yaml
+                  
+   Note: what we see here is it will update the nginx-deployment-dev.yaml file with the new version 1.8, we can also check by using "kubectl get pods" and also we can see in the Node(Minion) by using "docker ps".  Also we can describe and see what update it is curretly running by using below command:
+   
+                  kubectl describe deployments -l app=nginx-deployment-dev
+                  
+                  
+   
+   
+                  
+   
       
   
       
