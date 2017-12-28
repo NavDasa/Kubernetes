@@ -112,7 +112,10 @@ Note: while we are configuring with centos-master or centos-node if it is not pr
                   KUBELET_PORT="--kubelet-port=10250"
                   
                   # Comma separated list of nodes in the etcd cluster
-                  KUBE_ETCD_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
+                  KUBE_ETCD_SERVICES="--etcd-services=http://127.0.0.1:2379"
+                  
+                  # Address range to use for services
+                  KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
                   
                   # default admission control polices
                   # KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle.NamespaceExists.LimitRanger.SecurityContext.ServiceAccount.Restore.ResourceQuota"
