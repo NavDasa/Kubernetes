@@ -593,13 +593,47 @@ Interacting with POD containers:
    Note : If we exit the container (POD) and attach again we can see the xterm because the container within the pod is running.
    
    
+   
+LOGS: (IMPORTANT):
+
+   How to pull logs from our PODS, without having to attach them to run a command or execuate a command on it. We can see it by an kubectl utility. Shows all the system logs how the pod is behaving, also shows the system logs of the container running in our pods in our cluster as shown below:
+   
+                  kubectl logs <pod name> 
+                  kubectl logs tail=1 <pod name> ( can get logs for the last log for the pod )
+                  kubectl logs --since=24h <pod name> ( can see the logs for a period of 24h, we can also see mins & sec also ) 
+                  kubectl logs -f <pod name> ( we can fallow the logs for that particular pod)
                   
                   
-                 
+Auto Scaling & Scaling our Pods:
+
+                  kubectl run myautoscale --image=latest123/apache --port=80 --labels=app=myautoscale
+                  
+                  kubectl get deployments
+                  
+   If we want to autoscale the deployments, by keeping the Min & Max numbers:
+   
+                  kubectl autoscale deployment myautoscale --min=2 --max=6
+                  
+   Immediatly after the autoscaling has runned, we can get atleast a minimum of two pods running can verify by using " kubectl get pods " & " Kubectl get deployments". If we want to make further changes to our current environment by using the above command again:
+   
+                  kubectl autoscale deployment myautoscale --min=4 --max=6 
+                  
+   Note: It throws an Error that we have autoscale assigned already, what if we want to change our existing environment that we autoscaled currently and want to change again, using the below command:
+   
+                  kubectl scale --current-replicas=2 --replicas=4 deployment/myautoscale ( we see that myautoscale is scaled )
+                  docker ps ( 4 instances in the Nodes )
+                  kubectl get pods ( can see the 4 pods Running )
+                  
+   Can we scale down Now for the existing Autoscaling Environment ? Yes as the above command 
+                  
+                  kubectl scale --current-replicas=4 --replicas=2 deployment/myautoscale ( scale down from 4 to 2 )
+                  
+                  kubectl get pods ( can see only 2 pods)
                   
                   
-                
-       
+   Note: Here we can scale down but can' scale down less then what we have written in the autoscaling policy.(I.E first we created that is the one, we can't go less then that minimum number)
+   
+   
    
    
 
