@@ -631,10 +631,21 @@ Auto Scaling & Scaling our Pods:
                   kubectl get pods ( can see only 2 pods)
                   
                   
-   Note: Here we can scale down but can' scale down less then what we have written in the autoscaling policy.(I.E first we created that is the one, we can't go less then that minimum number)
+   Note: Here we can scale down but can' scale down less then what we have written in the autoscaling policy.(I.E first we created that   is the one, we can't go less then that minimum number)
+   
+
+FAILURE & RECOVERY :
+
+   Why, this faliure & recovery mean, after we created a POD with one container in it as Replicas, and said to deploy this POD on one centos-Node1 each. i.e one POD in centos-Node1 & one POD in centos-Node2, even if any case the centos-Node1 fails, the POD will not be failed in the centos-Master i.e we can see that 2 PODS available in centos-master. However, if the centos-Node1 is started again or recoverd again we can see that one POD we deployed, by uding the command "docker ps". 
+   
+   For example, there is a command for creation.
+   
+                  kubectl myrecovery --image=latest123/apache --port=80 --replicas=2 --labels=app=myrecovery 
+                  
+   Note: A myrecovery POD will be created and deployed, then later on fallow the above procedure accordingly. 
    
    
-   
+
    
 
   
