@@ -262,18 +262,18 @@ Creating and Deploying Pods:
  
                   kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
                   
-      we will be with the busybox container So paste the below command:
+   we will be with the busybox container So paste the below command:
       
                   wget -q0- http://172.17.0.2
                   
-      Here we get the access for this Pod internally, we can see the html page of nginx. 
+   Here we get the access for this Pod internally, we can see the html page of nginx. 
       
-      Next we can also delate the both image of Busybox & also Particular Pod in the master so that it will delate automatically in the Nodes(Minions) as well by using the below commands:
+   Next we can also delate the both image of Busybox & also Particular Pod in the master so that it will delate automatically in the Nodes(Minions) as well by using the below commands:
       
                   kubectl delete pod busybox
                   kubectl delete pod nginx
        
-      In order to get nginx access externally, we has to first do the port forward, in order to do that create the nginx pod again and do port farword: 
+   In order to get nginx access externally, we has to first do the port forward, in order to do that create the nginx pod again and do port farword: 
       
                   kubectl get pods
                   kubectl create -f ./nginx.yaml
@@ -285,7 +285,7 @@ Creating and Deploying Pods:
                   wget -q0- http://localhost:34853 
                   
   
-      Note: Now we get the nginx service externally by using the above wget command.
+   Note: Now we get the nginx service externally by using the above wget command.
       
   
       
