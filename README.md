@@ -527,10 +527,79 @@ Create and Deploy services:
    If we want to delete the service use the below command:
    
                   kubectl delete service nginx-service ( It won't deletes the Pods it deletes only services )
+                  
    
    
    
+Creating Temporary Pods at the Command Line:
+
+   Note: we are going to use one centos-master & centos-node1, centos-node2 only. You can also stop centos-node3 by using the command below:    
+                  systemctl stop kubelet kube-proxy
+
+   Here we are going to see without writting an YAML file, how we can create, run a POD with a single container in it by a single command: 
+                  
+                  kubectl run mysample --image=latest123/apache 
+                  
+   For the above command it create a deployment for My-sample created (apache), we can also see the Pods, Deployments, describe deployments, describe pods, delete deployment using the below commands:
    
+                  kubectl get pods
+                  kubectl get deployments
+                  kubectl describe deployments
+                  kubectl describe pod <pod name>
+                  kubectl delete deployment <deployment name>
+                  
+   If for Example, if we want to run multiple pods, multiple containers and can run in each Node, we can use replicas here. By using the below command:
+   
+                  
+                  kubectl run myreplicas --image=latest123/apache --replicas=2 --labels=app=myapache,version=1.0
+                  
+   Here for the above command, deployment myreplicas will be created, we can also describe myreplicas, get Pods, check in minions(Nodes), describe with labels by using the below commands:
+   
+                  kubectl describe deployment myreplicas 
+                  kubectl get pods
+                  docker ps ( check in Nodes, one will be running )
+                  kubectl describe pods -l version=1.0
+                  
+                  
+Interacting with POD containers:
+
+   In order to interact with the POD, first of all we has to have an write an YAML file for the POD creation, after writting an YAML File, if we Just create the POD. Then we can interact with that POD how its possible is shown in the below steps:
+   
+                  kubectl create -f myapache.yaml ( we are creating an apache )
+                  
+                  kubectl get pods (we can see that myapache pod is running)
+                  
+                  kubectl describe pod myapache ( describes the pod <pod name> )
+                  
+                  kubectl exec myapache date ( shows the date )
+                  
+  
+   If we want to attach to that pod (myapache) for the root user, use the below command:
+   
+                  kubectl exec myapache -i -t -- /bin/bash 
+                  ps aux | grep apache ( can see the FOREGROUND )
+                  
+                  cd /var/www/html ( we won't see nothing here )
+                  ls -al (we see the index.html )
+                  
+                  export TERM=xterm  ( Enivronment variable for our terminal will be set up for our container)
+                  apt-get update
+                  apt-get install lynx ( Its a text based web browser, can see want apache within the container)
+                  lynx http://localhost ( can see apache debian webpage )
+                  mv index.html index.backup
+                  echo "This is a test webpage" > index.html 
+                  lynx http://localhost ( Now can see the index.html page with the content )
+                  
+   Note : If we exit the container (POD) and attach again we can see the xterm because the container within the pod is running.
+   
+   
+                  
+                  
+                 
+                  
+                  
+                
+       
    
    
 
