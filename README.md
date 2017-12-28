@@ -193,20 +193,20 @@ Note: while we are configuring with centos-master or centos-node if it is not pr
                   docker ps
                   docker ps -a
                   
-                  
- 4. Kubectl: Exploring our Environment ( Main Untility):
+   
+4 . Kubectl: Exploring our Environment ( Main Untility):
  
-      1. Basically kubectl controlles & manages the cluster manager we can also see the kubectl man page by using below command:
+   1. Basically kubectl controlles & manages the cluster manager we can also see the kubectl man page by using below command:
                   
                   man kubectl
                   
-      2. we can also check that what nodes are registerd & also can see the man page of kubectl-get by using the below command:
+   2. we can also check that what nodes are registerd & also can see the man page of kubectl-get by using the below command:
       
                   kubectl get nodes
                   
                   man kubectl-get
                   
-      3. If we want to describe the nodes & also describes the nodes in the JSON format & also says that they are ready=True:
+   3. If we want to describe the nodes & also describes the nodes in the JSON format & also says that they are ready=True:
                   
                   kubectl describe nodes
                   
@@ -214,13 +214,86 @@ Note: while we are configuring with centos-master or centos-node if it is not pr
                   
                   kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'| tr ';' "\n"  | grep "Ready=True"
                   
-     4. Finally we know that an Nodes consists of pods or services which they don't have Now, So If we use below command It shows Nothing:   
+   4. Finally we know that an Nodes consists of pods or services which they don't have Now, So If we use below command It shows Nothing:   
      
                   kubectl get pods
                   
-                  
+
+
+Creating and Deploying Pods:
+
+   1. Below what we do exactly is that we create a YAML file and name it as nginx.yaml in a Directory called Build.In order to create a Pod contains an nginx container. So after creating Pod this can be deployed in one Node, So that we can see the same nginx container. 
    
+      In this senario we use one centos-Master and one centos-Node. Below is the commands to start with:
+   
+                  mkdir Builds
+                  ll
+                  cd Builds
+                  
+                  vim nginx.yaml              
+                  
+      Below is the YAML file that we has to paste the below content
+      
+                  apiVersion: V1
+                  kind: Pod
+                  metadata:
+                    name: nginx
+                  spec:
+                    containers: 
+                    - name: nginx
+                      image: nginx:1.7.9
+                      ports:
+                      - containerPort: 80
+                      
+      In order to create the Pod Just Run the below command: This creation will create the pod that contains an nginx container in both Master and one Node we are using.
+      
+                  kubectl create -f ./nginx.yaml 
+      
+      Also we can check is the container is running in the Minion(Node) as well by using the below command, by going to the Node:
+      
+                  docker ps
+                  
+      If we want to Know what the Pods are running or Particular pod by using the below command in the Master :
+      
+                  kubectl describe pods
+                  kubectl describe pod nginx
                  
+      Note: Here we can see the IP address, So in order to connect to that Particular IP address externaly by using the command "ping 172.17.0.2" we thrown an error, because we don't have route externally to that Pod, in order to rectify that we will create an other resources with our pod in our environment so that we can ping to that IP Address. So the name of the resource is busybox & run this busybox image within the environment, By using the below commands:
+ 
+                  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+                  
+      we will be with the busybox container So paste the below command:
+      
+                  wget -q0- http://172.17.0.2
+                  
+      Here we get the access for this Pod internally, we can see the html page of nginx. 
+      
+      Next we can also delate the both image of Busybox & also Particular Pod in the master so that it will delate automatically in the Nodes(Minions) as well by using the below commands:
+      
+                  kubectl delete pod busybox
+                  kubectl delete pod nginx
+       
+      In order to get nginx access externally, we has to first do the port forward, in order to do that create the nginx pod again and do port farword: 
+      
+                  kubectl get pods
+                  kubectl create -f ./nginx.yaml
+                  
+                  kubectl port-forward nginx :80 &
+                         (& - represents runit in the background)
+                         (we can also do 8080:80 if we need)
+                        
+                  wget -q0- http://localhost:34853 
+                  
+  
+      Note: Now we get the nginx service externally by using the above wget command.
+      
+      
+                  
+                  
+                  
+      
+      
+      
                   
  
                   
