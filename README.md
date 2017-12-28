@@ -220,7 +220,7 @@ Note: while we are configuring with centos-master or centos-node if it is not pr
                   
 
 
-Creating and Deploying Pods:
+Creating Pods:
 
    1. Below what we do exactly is that we create a YAML file and name it as nginx.yaml in a Directory called Build.In order to create a Pod contains an nginx container. So after creating Pod this can be deployed in one Node, So that we can see the same nginx container. 
    
@@ -285,7 +285,39 @@ Creating and Deploying Pods:
                   wget -q0- http://localhost:34853 
                   
   
-   Note: Now we get the nginx service externally by using the above wget command.
+   Note: Now we get the nginx service externally by using the above wget command.
+   
+   
+   
+Tags, Labels and Selectors:
+
+   Why this tags,labels comes into picture is that we have "n" Number of Pods in an organization, In order communicate with one pod to another pod there should an label. So, this label has to be mention in the Pod. So inorder to do all this first of all we have to create an YAML file that contains Pods which has label in that Pod. Please see below the YAML file. And name of the YAML file is nginx-pod-label.yaml file:
+   
+                apiVersion: V1
+                  kind: Pod
+                  metadata:
+                    name: nginx
+                    labels:
+                      app: nginx
+                  spec:
+                    containers: 
+                    - name: nginx
+                      image: nginx:1.7.9
+                      ports:
+                      - containerPort: 80  
+
+   Then create that Pod that contains Label by using the below command:
+   
+                 kubectl create -f ./nginx-pod-label.yaml
+                 
+   If we want to describe the label particularly, we can use the below command:
+   
+                 kubectl get pods -l app=nginx ( here we can see the particular label nginx )
+                 kubectl describe pods -l app=nginx  ( So that we can describe only the label of nginx that we need )
+                 
+   Note: This will be used if we have "n" number of pods contains "n" number of labels, by using the above commands we can describe or get labels of the particular Pod.
+   
+   
       
   
       
