@@ -255,17 +255,60 @@ Note: Use only one centos-master & one centos-node1 and stop centos-node2 & cent
       In order to create the Pod Just Run the below command: This creation will create the pod that contains an nginx container in both Master and one Node we are using.
       
                   kubectl create -f ./nginx.yaml 
+                  
+      Note: If we get any Error in creating a POD of nginx.yaml, then add a new key as fallows
       
-      Also we can check is the container is running in the Minion(Node) as well by using the below command, by going to the Node:
+      Error from server (ServerTimeout): error when creating "./nginx.yaml": No API token found for service account "default", retry after the token is automatically created and added to the service account.
+
+Resolution:
+
+
+1. Generate RSA key
+
+[root@kamb1021 Builds]# openssl genrsa -out /etc/kubernetes/serviceaccount.key 2048
+
+Generating RSA private key, 2048 bit long modulus
+
+..........+++
+
+.............+++
+
+e is 65537 (0x10001)
+
+2. Add the new key in /etc/kubernetes/apiserver
+
+[root@kamb1021 Builds]# vim /etc/kubernetes/apiserver
+
+
+KUBE_API_ARGS="--service_account_key_file=/etc/kubernetes/serviceaccount.key"
+
+3. Add the new key in /etc/kubernetes/controller-manager
+
+[root@kamb1021 Builds]# vim /etc/kubernetes/controller-manager
+
+KUBE_CONTROLLER_MANAGER_ARGS="--service_account_private_key_file=/etc/kubernetes/serviceaccount.key"
+
+4. Restart services
+
+
+systemctl restart etcd kube-apiserver kube-controller-manager kube-scheduler
+
+systemctl status etcd kube-apiserver kube-controller-manager kube-scheduler
+
+Source: 
+
+https://github.com/kubernetes/kubernetes/issues/11355#issuecomment-127378691
+      
+   Also we can check is the container is running in the Minion(Node) as well by using the below command, by going to the Node:
       
                   docker ps
                   
-      If we want to Know what the Pods are running or Particular pod by using the below command in the Master :
+   If we want to Know what the Pods are running or Particular pod by using the below command in the Master :
       
                   kubectl describe pods
                   kubectl describe pod nginx
                  
-      Note: Here we can see the IP address, So in order to connect to that Particular IP address externaly by using the command "ping 172.17.0.2" we thrown an error, because we don't have route externally to that Pod, in order to rectify that we will create an other resources with our pod in our environment so that we can ping to that IP Address. So the name of the resource is busybox & run this busybox image within the environment, By using the below commands:
+   Note: Here we can see the IP address, So in order to connect to that Particular IP address externaly by using the command "ping 172.17.0.2" we thrown an error, because we don't have route externally to that Pod, in order to rectify that we will create an other resources with our pod in our environment so that we can ping to that IP Address. So the name of the resource is busybox & run this busybox image within the environment, By using the below commands:
  
                   kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
                   
