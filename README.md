@@ -314,7 +314,7 @@ https://github.com/kubernetes/kubernetes/issues/11355#issuecomment-127378691
                   
    we will be with the busybox container So paste the below command:
       
-                  wget -q0- http://172.17.0.2
+                  wget -qO- http://172.17.0.2
                   
    Here we get the access for this Pod internally, we can see the html page of nginx. 
       
