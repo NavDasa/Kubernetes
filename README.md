@@ -332,7 +332,7 @@ https://github.com/kubernetes/kubernetes/issues/11355#issuecomment-127378691
                          (& - represents runit in the background)
                          (we can also do 8080:80 if we need)
                         
-                  wget -q0- http://localhost:34853 
+                  wget -qO- http://localhost:34853 
                   
   
    Note: Now we get the nginx service externally by using the above wget command.
