@@ -1,0 +1,5 @@
+How to unschedule node ?
+      --> kubectl cordon <IP Address of the Node> 
+                or
+      --> kubectl cordon $NodeName
+      
