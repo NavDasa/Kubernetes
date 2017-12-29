@@ -1,0 +1,36 @@
+Updgrade the kubernetes version from 1.5.2 to 1.6
+
+1. Unschedule the Nodes in the Master
+
+--> kubectl cordon <IPaddress>
+--> kubectl cordon <$Hostname> 
+
+It should display "Ready,SchedulingDisabled"  
+
+2. Stop the service kubelet in the Slave (Node) by using the command below
+
+	systemctl stop kubelet	
+
+3. Stop the services in the Master only by using the command 
+
+--> At this point, with controller-manager, scheduler, apiserver, and proxy stopped, Kubernetes is shut down.
+
+--> Use the command to shutdown 
+
+	systemctl stop kube-apiserver kube-controller-manager kube-scheduler kube-proxy
+	
+ Use the commands I tried before for Example:
+
+	systemctl stop kube-apiserver kube-controller-manager kube-scheduler kube-proxy
+	kubectl get nodes
+	systemctl status kube-apiserver kube-controller-manager kube-scheduler kube-proxy
+	systemctl start kube-apiserver kube-controller-manager kube-scheduler kube-proxy
+	clear
+	systemctl start kube-apiserver kube-controller-manager kube-scheduler etcd
+
+Note : Finally we should get the Nodes status "kubectl get nodes" 
+
+	The status of all nodes should be "NotReady,SchedulingDisabled."
+
+
+4. Upgrade ETCD.
