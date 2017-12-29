@@ -609,6 +609,19 @@ Creating Temporary Pods at the Command Line:
                   
 Interacting with POD containers:
 
+   Before creating POD, first write an YAML file by name apache.yaml as fallows:
+                  
+                  apiVersion: v1
+                  kind: Pod
+                  metadata:
+                    name: myapache
+                  spec:
+                    containers:
+                    - name: myapache
+                      image: latest123/apache
+                      ports:
+                      - containerPort: 80
+
    In order to interact with the POD, first of all we has to have an write an YAML file for the POD creation, after writting an YAML File, if we Just create the POD. Then we can interact with that POD how its possible is shown in the below steps:
    
                   kubectl create -f myapache.yaml ( we are creating an apache )
