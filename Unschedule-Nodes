@@ -3,3 +3,9 @@ How to unschedule node ?
                 or
       --> kubectl cordon $NodeName
       
+How to schedule your nodes ?
+
+      --> kubectl uncordon <IP Address>
+                  or
+      --> kubectl uncordon $NodeName
+      
