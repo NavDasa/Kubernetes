@@ -9,3 +9,5 @@ How to schedule your nodes ?
                   or
       --> kubectl uncordon $NodeName
       
+Want to learn are know the commands of kubectl: (A complete commands of kubernetes)
+                  https://kubernetes.io/docs/reference/kubectl/cheatsheet/ 
