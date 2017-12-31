@@ -24,3 +24,6 @@ Please do try our beta features and give feedback on them! Once they exit beta, 
 Stable level:
 The version name is vX where X is an integer.
 Stable versions of features will appear in released software for many subsequent versions.
+
+
+For More Information: https://kubernetes.io/docs/concepts/overview/kubernetes-api/
